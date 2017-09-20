@@ -1,41 +1,86 @@
-#include <stdio.h>
-//#include <stdlib.h>
-#include <ctype.h>//为isspace()提供原型
-#include <stdbool.h>
-#define STOP '|' //定义结束标志
-
-
-int main(void)
+#include<iostream>
+#include<stdlib.h>
+#include<iomanip>
+#include<time.h>
+using namespace std;
+#define random() (rand()%100) 
+int main()
 {
-	char c;
-	char prev;//读取的前一个字符
-	long n_chars = 0L;//字符数
-	int n_lines = 0;//行数
-	int n_words = 0;//单词数
-	bool inword = false;//字符在单词中,inward等于ture
-
-	printf("请输入字符( | 用于结束输入):\n");
-	prev = '\n';//识别完整的行
-
-	while ((c = getchar()) != STOP)//当读取的字符不为结束字符时
+	int i, j, m, a, b, c, d,count;
+	char k;
+	srand((int)time(NULL));  //设置时间种子 ，使得程序每次运行的结果都不同 
+	cout << "请输入生成多少道题目:" ;
+	cin >>  count;
+	for (i = 0;i<count;i++)
 	{
-		n_chars++;//统计字符数
+		a = random();
+		b = random();
+		c = random();
+		d = random();
 
-		if (c == '\n')
-			n_lines++;//统计行
+		j = random();
+		m = random();
 
-		if (!isspace(c) && !inword)
+		j = j % 4;
+		m = m % 2;
+		if (m == 0)  //m=0时，生成整数四则运算 
 		{
-			inword = true;//开始一个新单词;
-			n_words++;//统计单词
-		}
-		if (isspace(c) && inword)
-			inword = false;//打到单词的结尾
-		prev = c;
-	}
+			if (j == 0) k = '+';
+			else if (j == 1) k = '-';
+			else if (j == 2) k = '*';
+			else
+			{
+				for (;;)
+				{
+					if (b == 0) b = random();
+					else break;
+				}
+				k = '/';
+			}
 
-	if (prev != '\n')
-		n_lines ++;
-	printf("字母数目=%ld,单词数=%d,行数=%d,", n_chars, n_words, n_lines);
+			cout << setw(3) << a << setw(2) << k << setw(3) << b << setw(3) << "= " << endl;
+		}
+		else  //m=1时，生成真分数四则运算 
+		{
+			for (;;) //位于分母的c不能为0 
+			{
+				if (c <= a)
+				{
+					c = random();
+				}
+				else break;
+			}
+			for (;;)  //位于分母的d不能为0 
+			{
+				if (d <= b)
+				{
+					d = random();
+				}
+				else break;
+			}
+			if (j == 0) k = '+';
+			else if (j == 1) k = '-';
+			else if (j == 2) k = '*';
+			else  //当b为0时，b/d为除数，所以b也不能为0 
+			{
+				for (;;)
+				{
+					if (b == 0)
+					{
+						b = random();
+					}
+					else if (b <= d)
+					{
+						d = random();
+					}
+					else break;
+				}
+				k = '/';
+			}
+
+			cout << setw(3) << a << "/" << c << setw(2) << k << setw(3) << b << "/" << d << setw(3) << "= " << endl;
+		}
+
+	}
 	return 0;
 }
